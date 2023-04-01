@@ -1,28 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
-import React from 'react';
-import Person from "./Person/Person"
+// import logo from './logo.svg';
+import mystyles from "./App.css";
+import React from "react";
+import Cockpit from "../components/Cockpit/Cockpit";
+import Persons from "../components/Persons/Person";
 
-import { Component } from 'react'
+import { Component } from "react";
 
+// import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    console.log("[App.js] inside the constructor", props);
+  }
+
+  componentWillMount() {
+    console.log("[App.js] inside component will mount");
+  }
+
+  componentDidMount() {
+    console.log("[App.js] inside component did mount");
+  }
 
   state = {
-
     persons: [
-
-      { id: "hdbwe", name: 'Aniruddha', age: 21 },
-      { id: "rgwqrg", name: 'Ravi', age: 22 },
-      { id: "w4t4tq", name: 'Reshma', age: 23 }
-
+      { id: "hdbwe", name: "Aniruddha", age: 21 },
+      { id: "rgwqrg", name: "Ravi", age: 22 },
+      { id: "w4t4tq", name: "Reshma", age: 23 },
     ],
 
     otherstate: "Some_Other_Value",
 
-    showPersons: true
-
-  }
+    showPersons: true,
+  };
 
   // switchNameHandler = (newName) => {
   //   // console.log("Was_Clicked !");
@@ -38,26 +49,23 @@ class App extends Component {
   //   console.log(this.state);
   // }
   deletePersonHandler = (personIndex) => {
-
     // const persons = this.state.persons.slice();
 
     const persons = [...this.state.persons];
 
     persons.splice(personIndex, 1);
 
-    this.setState({ persons: persons })
-
-  }
+    this.setState({ persons: persons });
+  };
 
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
 
     this.setState({ showPersons: !doesShow });
-  }
+  };
 
   nameChangeHandler = (event, id) => {
-
-    // const oneperson = this.state.persons.find() 
+    // const oneperson = this.state.persons.find()
 
     // const personIndex = this.state.persons.findIndex((p) => {
     //   return p.id === id;
@@ -69,16 +77,9 @@ class App extends Component {
 
     // const paarson = { ...this.state.persons };
 
-
     // paarson[personIndex] = pearson;
 
-
-
-
-
-
-
-    // Also we can do 
+    // Also we can do
 
     //const pearson = Object.assign({}, this.state.persons[personIndex]);
 
@@ -87,72 +88,45 @@ class App extends Component {
         { name: "Aniruddha", age: 21 },
         { name: event.target.value, age: 23 },
         { name: "Reshma", age: 23 },
-      ]
+      ],
 
       // persons: paarson
-    })
-
-  }
-
+    });
+  };
 
   // function App() {
 
   render() {
+    // const style = {
 
-    const style = {
+    //   backgroundColor: 'green',
 
-      backgroundColor: 'green',
+    //   color: 'white',
 
-      color: 'white',
+    //   font: 'inherit',
 
-      font: 'inherit',
+    //   border: '1px solid blue',
 
-      border: '1px solid blue',
+    //   padding: '8px',
 
-      padding: '8px',
+    //   cursor: 'pointer'
 
-      cursor: 'pointer'
-
-
-    }
+    // }
 
     let parsons = null;
 
     if (this.state.showPersons) {
-
       parsons = (
-
         <div>
-
-          {this.state.persons.map((person, index) => {
-            return <Person
-              click={() => this.deletePersonHandler(index)}
-
-              name={person.name}
-              age={person.age}
-
-              key={person.id}
-
-              changed={(event) => this.nameChangeHandler(event, person.id)}
-
-
-
-
-            ></Person>
-          })}
-
+          <Persons
+            persons={this.state.persons}
+            clicked={this.deletePersonHandler}
+            changed={this.nameChangeHandler}
+          />
         </div>
-
-
-
       );
 
-      style.backgroundColor = "red";
-
-
-
-
-
+      // style.backgroundColor = "red";
 
       // parsons = (
 
@@ -179,57 +153,17 @@ class App extends Component {
 
     // let classnow = ['red', 'bold'].join(' ')
 
-    let classes = [];
-
-    if (this.state.persons.length <= 5) {
-
-      classes.push('red');  // classes = ['red']
-
-
-
-    }
-
-
-    if (this.state.persons.length <= 1) {
-
-      classes.push('bold');  // classes = ['red', 'bold']
-
-
-
-    }
-
-
-
-
-
-
-
     return (
-
-
-
-      <div className="App">
-
-        <h1>Hi! I am Aniruddha Patil and this is my first React App</h1>
-        <p className={classes.join(' ')}>This is really working !</p>
-
-        <button
-          onClick={this.togglePersonsHandler}
-          style={style}
-        >Toggle Persons</button>
-
+      <div className={mystyles.App}>
+        <Cockpit
+          appTitle={this.props.title}
+          showPersons={this.state.showPersons}
+          persons={this.state.persons}
+          clicked={this.togglePersonsHandler}
+        />
 
         {parsons}
-
-      </div >
-
-
-
-
-
-
-
-
+      </div>
 
       // {/* <header className="App-header">
       //   <img src={logo} className="App-logo" alt="logo" />
@@ -246,17 +180,10 @@ class App extends Component {
       //   </a>
       // </header> */}
 
-
-
       // React.createElement('div',{className : "App"},React.createElement('h1', null, "Hi! I am Aniruddha Patil and this is my first React App"))
     );
-
   }
-
-
-
-
-};
+}
 
 // function App() {
 
@@ -281,7 +208,6 @@ class App extends Component {
 //           Learn React
 //         </a>
 //       </header> */}
-
 
 //     </div>
 
