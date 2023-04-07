@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { AuthContext } from "../../../containers/App";
+
+import propTypes from "prop-types";
 
 import classes from "./Person.css";
 
@@ -15,11 +18,18 @@ class Person extends Component {
 
   componentDidMount() {
     console.log("[Person.js] inside component did mount");
+
+    if (this.inputElement.position == 1) {
+      this.inputElement.focus();
+    }
   }
   render() {
     console.log("[Person.js] inside render()");
     return (
       <div className={classes.Person}>
+        <AuthContext.Consumer>
+          {(auth) => (auth ? <p>I am authenticated ! </p> : null)}
+        </AuthContext.Consumer>
         <p>
           I am <b>{this.props.name}</b> and I am {this.props.age} years old.
         </p>
@@ -27,6 +37,9 @@ class Person extends Component {
         {/* <button onClick={props.change}>Me too !</button> */}
         <input
           type="text"
+          ref={(inp) => {
+            this.inputElement = inp;
+          }}
           onChange={this.props.changed}
           value={this.props.name}
         ></input>
@@ -34,5 +47,12 @@ class Person extends Component {
     );
   }
 }
+
+Person.propTypes = {
+  click: propTypes.func,
+  name: propTypes.string,
+  age: propTypes.number,
+  changed: propTypes.func,
+};
 
 export default Person;

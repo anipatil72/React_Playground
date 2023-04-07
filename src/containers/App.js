@@ -2,13 +2,16 @@
 import mystyles from "./App.css";
 import React from "react";
 import Cockpit from "../components/Cockpit/Cockpit";
-import Persons from "../components/Persons/Person";
+import Persons from "../components/Persons/Persons";
+import { PureComponent } from "react";
 
-import { Component } from "react";
+export const AuthContext = React.createContext(false);
+
+// import withClass from "../hoc/withClass";
 
 // import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
-class App extends Component {
+class App extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -23,6 +26,33 @@ class App extends Component {
     console.log("[App.js] inside component did mount");
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(
+      "[UPDATE App.js] inside getderivedStatefromProps",
+      nextProps,
+      prevState
+    );
+
+    return prevState;
+  }
+
+  getSnapshotBeforeUpdate() {
+    console.log("[UPDATE App.js] inside getSnapshotBeforeUpdate");
+  }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   console.log(
+  //     "[UPDATE App.js] inside should component Update",
+  //     nextProps,
+  //     nextState
+  //   );
+
+  //   return (
+  //     nextState.persons !== this.state.persons ||
+  //     nextState.showPersons !== this.state.showPersons
+  //   );
+  // }
+
   state = {
     persons: [
       { id: "hdbwe", name: "Aniruddha", age: 21 },
@@ -33,6 +63,8 @@ class App extends Component {
     otherstate: "Some_Other_Value",
 
     showPersons: true,
+    toggleClicked: 0,
+    authenticated: false,
   };
 
   // switchNameHandler = (newName) => {
@@ -61,7 +93,16 @@ class App extends Component {
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
 
-    this.setState({ showPersons: !doesShow });
+    this.setState((prevState, props) => {
+      return {
+        showPersons: !doesShow,
+        toggleClicked: prevState.toggleClicked + 1,
+      };
+    });
+  };
+
+  loginHandler = () => {
+    this.setState({ authenticated: true });
   };
 
   nameChangeHandler = (event, id) => {
@@ -155,14 +196,25 @@ class App extends Component {
 
     return (
       <div className={mystyles.App}>
+        {/* <button
+          onClick={() => {
+            this.setState = { showPersons: true };
+          }}
+        >
+          Show Persons
+        </button> */}
         <Cockpit
           appTitle={this.props.title}
           showPersons={this.state.showPersons}
+          login={this.loginHandler}
           persons={this.state.persons}
           clicked={this.togglePersonsHandler}
+          // isAuthenticated={this.authenticated}
         />
 
-        {parsons}
+        <AuthContext.Provider value={this.state.authenticated}>
+          {parsons}
+        </AuthContext.Provider>
       </div>
 
       // {/* <header className="App-header">

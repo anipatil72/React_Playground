@@ -2,13 +2,15 @@ import React from "react";
 
 import mystyles from "./Cockpit.css";
 
+import auxx from "../../hoc/Auxx";
+
 const cockpit = (props) => {
   let classes = [];
 
-  let btnclass = "";
+  let btnclass = mystyles.Button;
 
   if (props.showPersons) {
-    btnclass = mystyles.red;
+    btnclass = [mystyles.Button, mystyles.red].join(" ");
   }
 
   if (props.persons.length <= 5) {
@@ -19,7 +21,7 @@ const cockpit = (props) => {
     classes.push(mystyles.bold); // classes = ['red', 'bold']
   }
   return (
-    <div className={mystyles.Cockpit}>
+    <auxx>
       <h1>{props.appTitle}</h1>
       <p className={classes.join(" ")}>This is really working !</p>
 
@@ -30,7 +32,9 @@ const cockpit = (props) => {
       >
         Toggle Persons
       </button>
-    </div>
+
+      <button onClick={props.login}>Log In ! </button>
+    </auxx>
   );
 };
 

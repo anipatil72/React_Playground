@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
 import Person from "./Person/Person";
 
-class Persons extends Component {
+class Persons extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -19,19 +19,33 @@ class Persons extends Component {
 
   componentWillReceiveProps(nextProps) {
     console.log(
-      "[UPDATE Persons.js] inside componentWillReceibeProps",
+      "[UPDATE Persons.js] inside componentWillReceiveProps",
       nextProps
     );
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   console.log(
+  //     "[UPDATE Persons.js] inside should component update",
+  //     nextProps,
+  //     nextState
+  //   );
+
+  //   return nextProps.persons !== this.props.persons;
+
+  //   // return true;
+  // }
+
+  componentWillUpdate(nextProps, nextState) {
     console.log(
-      "[UPDATE Persons.js] inside should component update",
+      "[UPDATE Persons.js] inside component will update",
       nextProps,
       nextState
     );
+  }
 
-    return true;
+  componentDidUpdate() {
+    console.log("[UPDATE Persons.js ] inside component did update");
   }
 
   render() {
@@ -41,8 +55,10 @@ class Persons extends Component {
         <Person
           click={() => this.props.clicked(index)}
           key={person.id}
+          position={index}
           name={person.name}
           age={person.age}
+          // authenticated={this.props.isAuthenticated}
           changed={(event) => this.props.changed(event, person.id)}
         ></Person>
       );
